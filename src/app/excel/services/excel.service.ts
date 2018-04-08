@@ -19,6 +19,16 @@ export class ExcelService {
                     row.subCategory = element[2];
                     row.subCatName = element[3];
                     row.description = element[4];
+                    if(index === 2){ 
+                        row.errorCode = "001";
+                        row.errorMsg = "Warning, Data is not in correct state";
+                    } else if(index === 3){
+                        row.errorCode = "001";
+                        row.errorMsg = "Error, Please fix data and upload again";
+                    }else{
+                        row.errorCode = "001";
+                        row.errorMsg = "Success";
+                    }
                     rows.push(row);
                 }
             });

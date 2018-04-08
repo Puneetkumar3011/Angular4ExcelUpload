@@ -1,0 +1,53 @@
+<div>
+    <div class="modal fade" id="modalDisplay" tabindex="-1" role="dialog" 
+        data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-display-data" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!-- Validation modal -->
+                    <div *ngIf="!validationComplete">
+                        <table class="table table-striped" *ngIf="excelData && excelData.length > 0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Category Code</th>
+                                    <th scope="col">Category Name</th>
+                                    <th scope="col">Sub Category</th>
+                                    <th scope="col">Subcategory Name</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of excelData">
+                                    <td>{{row.categoryCode}}</td>
+                                    <td>{{row.categoryName}}</td>
+                                    <td>{{row.subCategory}}</td>
+                                    <td>{{row.subCatName}}</td>
+                                    <td>{{row.description}}</td>
+                                    <td [ngClass]="getValidationStatusCss(row.errorCode)">{{row.errorMsg}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div *ngIf="!excelData" class="loading">
+                            Processing&#8230;
+                        </div>
+                    </div>
+                    <!-- Confirmation modal -->
+                    <div *ngIf="validationComplete">
+                        <div *ngIf="!isUploading">
+                            <span class="text-danger" *ngIf="uploadStatus === 'error'">File upload failed. Please try gain latter.</span>
+                            <span class="text-primary" *ngIf="uploadStatus === 'success'">Congratulations. File uploaded successfully.</span>
+                        </div>
+                        <div *ngIf="isUploading" class="loading">
+                            Processing&#8230;
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="!excelData || isUploading" type="button" (click)="closeModal('modalDisplay')" class="btn btn-secondary">Close</button>
+                    <button [disabled]="!excelData" type="button" [hidden]="!isDataValid || validationComplete" (click)="uploadData()" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

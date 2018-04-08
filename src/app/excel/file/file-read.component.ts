@@ -8,7 +8,8 @@ import { ExcelService } from "../services/excel.service";
 })
 
 export class SheetJSComponent {
-	@Output() filesDropEmiter : EventEmitter<any> = new EventEmitter();
+	@Output() filesChangeEmiter : EventEmitter<any> = new EventEmitter();
+	@Output() filesChangeCompleteEmiter : EventEmitter<any> = new EventEmitter();
 	wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
 	fileName: string = 'SheetJS.xlsx';
 
@@ -20,9 +21,13 @@ export class SheetJSComponent {
 		if (target.files.length !== 1) throw new Error('Cannot use multiple files');
 		const reader: FileReader = new FileReader();
 		reader.onload = (e: any) => {
-			const bstr: string = e.target.result;
-			let excelData = this.excelSvc.readFile(bstr);
-			this.filesDropEmiter.emit(excelData);
+			this.filesChangeEmiter.emit(null);
+			setTimeout(()=>{
+				/* read workbook */
+				const bstr: string = e.target.result;
+				let excelData = this.excelSvc.readFile(bstr);
+				this.filesChangeCompleteEmiter.emit(excelData);
+			},3000);
 		};
 		reader.readAsBinaryString(target.files[0]);
 	}

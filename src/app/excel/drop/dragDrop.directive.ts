@@ -8,7 +8,8 @@ import { ExcelService } from "../services/excel.service";
 })
 export class FileDragDropDirective {
   @HostBinding('style.background') private background = '#eee';
-  @Output() filesChangeEmiter : EventEmitter<any> = new EventEmitter();
+  @Output() filesDropEmiter : EventEmitter<any> = new EventEmitter();
+  @Output() filesDropCompleteEmiter : EventEmitter<any> = new EventEmitter();
 
   constructor(private excelSvc: ExcelService) { }
 
@@ -31,10 +32,13 @@ export class FileDragDropDirective {
 
 		const reader: FileReader = new FileReader();
 		reader.onload = (e: any) => {
-			/* read workbook */
-      const bstr: string = e.target.result;
-      let excelData = this.excelSvc.readFile(bstr);
-			this.filesChangeEmiter.emit(excelData);
+      this.filesDropEmiter.emit(null);
+      setTimeout(()=>{
+        /* read workbook */
+        const bstr: string = e.target.result;
+        let excelData = this.excelSvc.readFile(bstr);
+        this.filesDropCompleteEmiter.emit(excelData);
+      },3000);
 		};
 		reader.readAsBinaryString(files[0]);
     
