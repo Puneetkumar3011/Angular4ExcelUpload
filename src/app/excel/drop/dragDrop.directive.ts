@@ -1,7 +1,7 @@
 import {Directive, HostListener, HostBinding, EventEmitter, Output, Input} from '@angular/core';
 import * as XLSX from 'xlsx';
 import { ExcelService } from "../services/excel.service";
-type AOA = any[][];
+//type AOA = any[][];
 
 @Directive({
   selector: '[fileDragDrop]'
@@ -32,15 +32,9 @@ export class FileDragDropDirective {
 		const reader: FileReader = new FileReader();
 		reader.onload = (e: any) => {
 			/* read workbook */
-			const bstr: string = e.target.result;
-			const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
-			/* grab first sheet */
-			const wsname: string = wb.SheetNames[0];
-			const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-			/* save data */
-      let data = <AOA>(XLSX.utils.sheet_to_json(ws, {header: 1}));
-      let excelData = this.excelSvc.processFile(data);
-      this.filesChangeEmiter.emit(excelData);
+      const bstr: string = e.target.result;
+      let excelData = this.excelSvc.readFile(bstr);
+			this.filesChangeEmiter.emit(excelData);
 		};
 		reader.readAsBinaryString(files[0]);
     

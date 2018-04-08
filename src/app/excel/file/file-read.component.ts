@@ -1,17 +1,14 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { ExcelService } from "../shared/services/excel.service";
-
-type AOA = any[][];
+import { ExcelService } from "../services/excel.service";
 
 @Component({
 	selector: 'sheetjs',
-	templateUrl: 'sheet.component.html'
+	templateUrl: 'file-read.component.html'
 })
 
 export class SheetJSComponent {
 	@Output() filesDropEmiter : EventEmitter<any> = new EventEmitter();
-	data: AOA;
 	wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
 	fileName: string = 'SheetJS.xlsx';
 
@@ -23,15 +20,8 @@ export class SheetJSComponent {
 		if (target.files.length !== 1) throw new Error('Cannot use multiple files');
 		const reader: FileReader = new FileReader();
 		reader.onload = (e: any) => {
-			/* read workbook */
 			const bstr: string = e.target.result;
-			const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
-			/* grab first sheet */
-			const wsname: string = wb.SheetNames[0];
-			const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-			/* save data */
-			this.data = <AOA>(XLSX.utils.sheet_to_json(ws, {header: 1}));
-			var excelData = this.excelSvc.processFile(this.data);
+			let excelData = this.excelSvc.readFile(bstr);
 			this.filesDropEmiter.emit(excelData);
 		};
 		reader.readAsBinaryString(target.files[0]);

@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { appModal } from "../app.modal";
+import { appModal } from "../excel-data.modal";
 
 @Component({
 	selector: 'displaygrid',

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { SheetJSComponent } from './excel/sheet.component';
+import { SheetJSComponent } from './excel/file/file-read.component';
 declare var $ :any;
 
 @Component({

@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import * as XLSX from 'xlsx';
 
-import { appModal } from "../../app.modal";
+import { appModal } from "../excel-data.modal";
+type AOA = any[][];
 
 @Injectable()
 export class ExcelService {
@@ -23,6 +24,14 @@ export class ExcelService {
             });
         }
         return rows;
+    }
+
+    readFile(targetRes: any){
+        const wb: XLSX.WorkBook = XLSX.read(targetRes, {type: 'binary'});
+        const wsname: string = wb.SheetNames[0];
+        const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+        let data = <AOA>(XLSX.utils.sheet_to_json(ws, {header: 1}));
+        return this.processFile(data);
     }
 
 }
