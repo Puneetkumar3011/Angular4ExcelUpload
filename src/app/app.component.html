@@ -1,0 +1,20 @@
+<div>
+    <div fileDragDrop (filesChangeEmiter)="displayRows($event)" >
+        <div class="text-wrapper">
+            <div class="centered">Drop your file here!</div>
+        </div>
+    </div>
+    <hr>
+    <div class="dropzone-list">
+        <sheetjs (filesDropEmiter)="displayRows($event)"></sheetjs>
+    </div>
+    <div>
+        <table *ngIf="excelData && excelData.length > 0" class="sjs-table">
+            <tr *ngFor="let row of excelData">
+                <td *ngFor="let val of row">
+                    {{val}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
