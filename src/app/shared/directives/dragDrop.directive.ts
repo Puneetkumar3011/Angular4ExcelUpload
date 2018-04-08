@@ -1,5 +1,6 @@
 import {Directive, HostListener, HostBinding, EventEmitter, Output, Input} from '@angular/core';
 import * as XLSX from 'xlsx';
+import { ExcelService } from "../services/excel.service";
 type AOA = any[][];
 
 @Directive({
@@ -9,7 +10,7 @@ export class FileDragDropDirective {
   @HostBinding('style.background') private background = '#eee';
   @Output() filesChangeEmiter : EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+  constructor(private excelSvc: ExcelService) { }
 
   @HostListener('dragover', ['$event']) public onDragOver(evt){
     evt.preventDefault();
@@ -38,7 +39,8 @@ export class FileDragDropDirective {
 			const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 			/* save data */
       let data = <AOA>(XLSX.utils.sheet_to_json(ws, {header: 1}));
-      this.filesChangeEmiter.emit(data);
+      let excelData = this.excelSvc.processFile(data);
+      this.filesChangeEmiter.emit(excelData);
 		};
 		reader.readAsBinaryString(files[0]);
     

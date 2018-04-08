@@ -1,8 +1,6 @@
-/* xlsx.js (C) 2013-present SheetJS -- http://sheetjs.com */
-/* vim: set ts=2: */
 import { Component, Output, EventEmitter } from '@angular/core';
-
 import * as XLSX from 'xlsx';
+import { ExcelService } from "../shared/services/excel.service";
 
 type AOA = any[][];
 
@@ -16,6 +14,8 @@ export class SheetJSComponent {
 	data: AOA;
 	wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
 	fileName: string = 'SheetJS.xlsx';
+
+	constructor(private excelSvc: ExcelService){}
 
 	onFileChange(evt: any) {
 		/* wire up file reader */
@@ -31,7 +31,8 @@ export class SheetJSComponent {
 			const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 			/* save data */
 			this.data = <AOA>(XLSX.utils.sheet_to_json(ws, {header: 1}));
-			this.filesDropEmiter.emit(this.data);
+			var excelData = this.excelSvc.processFile(this.data);
+			this.filesDropEmiter.emit(excelData);
 		};
 		reader.readAsBinaryString(target.files[0]);
 	}

@@ -1,0 +1,22 @@
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Category Code</th>
+                <th scope="col">Category Name</th>
+                <th scope="col">Sub Category</th>
+                <th scope="col">Subcategory Name</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="excelData && excelData.length > 0">
+            <tr *ngFor="let row of excelData">
+                <td>{{row.categoryCode}}</td>
+                <td>{{row.categoryName}}</td>
+                <td>{{row.subCategory}}</td>
+                <td>{{row.subCatName}}</td>
+                <td>{{row.description}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

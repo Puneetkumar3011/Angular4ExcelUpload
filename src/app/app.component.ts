@@ -1,10 +1,7 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { SheetJSComponent } from './excel/sheet.component';
-
-
-import { Component } from '@angular/core';
+declare var $ :any;
 
 @Component({
 	selector: 'app-root',
@@ -16,6 +13,8 @@ export class AppComponent {
 
 	displayRows(data){
 		this.excelData = data;
+		console.log(data);
+		$('#modalDisplay').modal('show');
 	}
 }
 
