@@ -9,7 +9,7 @@ declare var $ :any;
 })
 export class DisplyGrid{
     @Input() 
-    excelData : any;
+    excelData : Array<appModal>;
     isDataValid: Boolean = true;
     validationComplete: Boolean = false;
     isUploading: Boolean = false;
@@ -37,7 +37,18 @@ export class DisplyGrid{
        },3000);
     }
 
-    closeModal(id: String){
+    closeModal(id: String, isReset: Boolean){
         $('#' + id).modal('hide');
+        if(isReset){
+            this.resetDisplay();
+        }
+    }
+
+    resetDisplay(){
+        this.excelData = null;
+        this.isDataValid = true;
+        this.validationComplete = false;
+        this.isUploading = false;
+        this.uploadStatus = "";
     }
 }
